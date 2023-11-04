@@ -1,5 +1,4 @@
 import json
-from turtle import width
 import requests
 
 
@@ -13,6 +12,6 @@ if response.status_code == 200:
 
 print("widget list")
 for widget in widgetData:
-	print(f"Name: {width['name']} is {width['color']}")
+	print(f"Name: {widget['name']} is {widget['color']}")
 else:
 	print("failed to fetch data")
