@@ -10,7 +10,7 @@ HeightToChange = 100
 resizeImg = img.resize((widthToChange,HeightToChange))
 # this will resize the old image size to the new dimensions according to new width using pillow
 resizeImg.save("IMG_1270.jpg")
-
+img.load()
 
 # Applying fiter to reformatted pic
 greyscaleImg = img.convert("L")
