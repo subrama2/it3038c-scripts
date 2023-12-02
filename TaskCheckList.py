@@ -1,9 +1,10 @@
 # importing modules
 import requests
 from datetime import datetime, timedelta
-
+# list where we can store our tasks
 tasks = []
 
+#function where i ask for the tasks via input and do validation to make to sure they answer properly
 def setTasks():
   try:
     numOfTasks = int(input("How many tasks do have scheduled today: "))
@@ -27,16 +28,17 @@ def setTasks():
     category = str(input("enter task category ex: school, bill: ")).lower()
     location = str(input("enter task location ex: [home, college, grocery,etc] ")).lower()
     note = str(input("Enter notes for task if any: "))
+    #adding each task to the tasks list via as a dictionary
     tasks.append({"name":  taskName, "priority": importance, "Due Date": dueDate, "category": category, "location": location, "Notes": note })
-#displaying tasks
+#displaying tasks via by due date and using the due date key to do that and then printing each task and its details to the users
 def displayTasks(task_list):
   tasks.sort(key=lambda x: x["Due Date"])
   print("upcoming tasks: ")
   for task in tasks:
     print(f"Name: {task['name']}, priority: {task['priority']}, Due Date: {task['Due Date']}, category: {task['category']}, location: {task['location']}, Notes: {task['Notes']}")
-
+#asking user input to mark tasks as complete and removing from tasks list/dictionary
 def markedComplete():
-  # adding the option to mark tasks completed
+  # adding the option to mark tasks completed and doing validation to make sure the task is removed and that it is present to be removed
   completedTask = input("\n enter a name of a completed task or 'none' if none: ")
   if completedTask.lower() != 'none':
     taskFound = False
@@ -57,20 +59,20 @@ def checkWeather(filteredTasks):
   if outdoor_tasks:
     apiKey = input("please enter your api key in here: ")
     city = input("enter your city: ")
-
+    #url used to get our weather data via api key
     baseurl = "http://api.openweathermap.org/data/2.5/weather"
     param = {"q": city, "appid" : apiKey, "units": "metric"}
-
+    # try except to make sure no errors come from getting a response back from api
     try:
       response = requests.get(baseurl,params=param)
       data = response.json()
-
+      #making sure the response is successful and if it is print the results relating to the city detailed
       if response.status_code == 200:
         temp,weatherdescription = data['main']['temp'], data['weather'][0]['description']
         print(f"\n current weather in {city}: ")
         print(f"\n current temperature in {city} ")
         print(f"\n weather: {weatherdescription} ")
-
+        #if weather not sunshine then it is assumed to be not good and program suggests to maybe postpone it if outdoor activity
         for task in outdoor_tasks:
           if "sunshine" not in weatherdescription.lower():
             print(f"Suggestion for User: consider postponing the outdoor task '{task['name']}' due to {weatherdescription} weather")
@@ -81,7 +83,7 @@ def checkWeather(filteredTasks):
 
     except requests.RequestException as e:
       print(f"error {e}")
-
+#main loop that calls all functions and breaks when exiting program
 while True:
   print("\n Choose An option: ")
   print("1. Enter Tasks ")
